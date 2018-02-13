@@ -1,0 +1,36 @@
+---
+####Installing from tarball, then uncomment below lines
+
+  - name: remove existing java
+    shell: sudo rm -rf /usr/lib/jvm/*
+
+  - name: Tarball | Installing Java
+    shell: 'wget --directory=/usr/lib/jvm/java-8-oracle --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie"  "http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.tar.gz"'
+
+  - name: unarchive tarball
+    unarchive: src={{ java_installation_directory }}/jdk-8u161-linux-x64.tar.gz
+               dest={{ java_installation_directory }}
+               copy=no
+
+  - name: remove tarball
+    file: state=absent path={{ java_installation_directory }}/jdk-8u161-linux-x64.tar.gz
+
+  - name: move java executables to the path
+    shell: sudo mv /usr/lib/jvm/java-8-oracle/jdk1.8.0_161/* /usr/lib/jvm/java-8-oracle
+
+  - name: install java
+    shell: sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/bin/java 100
+
+  - name: install jps
+    shell: sudo update-alternatives --install /usr/bin/jps jps /usr/lib/jvm/java-8-oracle/bin/jps 100
+
+#  - name: adding java home
+#    shell: echo JAVA_HOME is $JAVA_HOME
+#    environment:
+#      JAVA_HOME: /usr/lib/jvm/java-8-oracle
+#    register: shellout
+
+  - name: Set Java HOME
+    lineinfile: dest=/etc/environment regexp="^(export JAVA_HOME=)" state=present line="export JAVA_HOME=/usr/lib/jvm/java-8-oracle"
+    register: shellout
+

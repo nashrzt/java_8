@@ -1,0 +1,9 @@
+---
+- name: Creating Installation Directory
+  file:
+    path: '{{ java_installation_directory }}'
+    state: directory
+#    owner: "{{ remote_user }}"
+#    group: "{{ remote_user }}"
+#    mode: 0755
+

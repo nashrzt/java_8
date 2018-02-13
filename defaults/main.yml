@@ -1,0 +1,4 @@
+---
+# defaults file for ansible-java installation using tar ball
+java_installation_directory: '/usr/lib/jvm/java-8-oracle'
+#remote_user: "ubuntu"
